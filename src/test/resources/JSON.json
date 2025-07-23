@@ -1,0 +1,14 @@
+  {
+    "name": "Marilyne Hill",
+    "phoneNumber": "+13536085110",
+    "characteristic":
+        {
+            "email": "nveum@zieme.net",
+            "address": {
+              "street": "6282 Reichel Course Apt. 591",
+              "city": "North Rogerport, NC 03149"
+            },
+            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_5_3) AppleWebKit/5341 (KHTML, like Gecko) Chrome/40.0.837.0 Mobile Safari/5341",
+            "hexcolor": "#27254f"
+        }
+  }
