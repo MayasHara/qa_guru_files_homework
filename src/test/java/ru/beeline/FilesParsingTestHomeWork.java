@@ -21,32 +21,55 @@ public class FilesParsingTestHomeWork {
     private ClassLoader cl = FilesParsingTestHomeWork.class.getClassLoader();
 
     @Test
-    @DisplayName("Тестирование всех файлов в архиве zip")
-    void zipFileParsingTest () throws Exception {
+    @DisplayName("Тестирование csv файлов в архиве zip")
+    void zipFileCsvParsingTest () throws Exception {
         try (ZipInputStream zis = new ZipInputStream(
                 cl.getResourceAsStream("zipa.zip")
-        ))  {
+        )) {
             ZipEntry entry;
 
             while ((entry = zis.getNextEntry()) != null) {
                 if (entry.getName().endsWith(".csv")) {
                     try (CSVReader csvReader = new CSVReader(new InputStreamReader(zis))) {
                         List<String[]> data = csvReader.readAll();
-                        Assertions.assertEquals ("name", data.get(0)[0]);
-                        Assertions.assertEquals (2, data.size());
+                        Assertions.assertEquals("name", data.get(0)[0]);
+                        Assertions.assertEquals(2, data.size());
                         Assertions.assertArrayEquals(
-                                new  String[] {"name","phoneNumber","email","address","userAgent","hexcolor"},
+                                new String[]{"name", "phoneNumber", "email", "address", "userAgent", "hexcolor"},
                                 data.get(0)
                         );
                     }
                     break;
                 }
-                else if (entry.getName().endsWith(".pdf")) {
-                        PDF pdf = new PDF(zis);
-                        Assertions.assertEquals ("Ian Mitchell", pdf.author);
-                        return;
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("Тестирование PDF файлов в архиве zip")
+    void zipFilePdfParsingTest () throws  Exception {
+        try (ZipInputStream zis = new ZipInputStream(
+                cl.getResourceAsStream("zipa.zip")
+        )) {
+            ZipEntry entry;
+            while ((entry = zis.getNextEntry()) != null) {
+                if (entry.getName().endsWith(".pdf")) {
+                    PDF pdf = new PDF(zis);
+                    Assertions.assertEquals("Ian Mitchell", pdf.author);
+                    return;
                 }
-                else if (entry.getName().endsWith(".xlsx")) {
+            }
+        }
+    }
+    @Test
+    @DisplayName("Тестирование XLSX файлов в архиве zip")
+    void  zipFileXlsxParsingTest () throws Exception {
+        try (ZipInputStream zis = new ZipInputStream(
+                cl.getResourceAsStream("zipa.zip")
+        )) {
+            ZipEntry entry;
+            while ((entry = zis.getNextEntry()) != null) {
+                if (entry.getName().endsWith(".xlsx")) {
                     XLS xls = new XLS(zis);
 
                     String actualValue = xls.excel.getSheetAt(0).getRow(0).getCell(1).getStringCellValue();
