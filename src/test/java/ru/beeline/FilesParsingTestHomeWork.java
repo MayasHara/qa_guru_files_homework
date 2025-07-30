@@ -9,6 +9,7 @@ import com.opencsv.CSVReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.*;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,9 +28,11 @@ public class FilesParsingTestHomeWork {
                 cl.getResourceAsStream("zipa.zip")
         )) {
             ZipEntry entry;
+            boolean csvFile = false;
 
             while ((entry = zis.getNextEntry()) != null) {
                 if (entry.getName().endsWith(".csv")) {
+                    csvFile = true;
                     try (CSVReader csvReader = new CSVReader(new InputStreamReader(zis))) {
                         List<String[]> data = csvReader.readAll();
                         Assertions.assertEquals("name", data.get(0)[0]);
@@ -42,6 +45,7 @@ public class FilesParsingTestHomeWork {
                     break;
                 }
             }
+            Assertions.assertTrue(csvFile, "CSV файл не найден");
         }
     }
 
@@ -52,13 +56,16 @@ public class FilesParsingTestHomeWork {
                 cl.getResourceAsStream("zipa.zip")
         )) {
             ZipEntry entry;
+            boolean pdfFile = false;
             while ((entry = zis.getNextEntry()) != null) {
+                pdfFile = true;
                 if (entry.getName().endsWith(".pdf")) {
                     PDF pdf = new PDF(zis);
                     Assertions.assertEquals("Ian Mitchell", pdf.author);
                     return;
                 }
             }
+            Assertions.assertTrue(pdfFile, "PDF файл не найден");
         }
     }
     @Test
@@ -68,7 +75,9 @@ public class FilesParsingTestHomeWork {
                 cl.getResourceAsStream("zipa.zip")
         )) {
             ZipEntry entry;
+            boolean xlsxFile = false;
             while ((entry = zis.getNextEntry()) != null) {
+                xlsxFile = true;
                 if (entry.getName().endsWith(".xlsx")) {
                     XLS xls = new XLS(zis);
 
@@ -77,6 +86,7 @@ public class FilesParsingTestHomeWork {
                     Assertions.assertTrue(actualValue.contains("Sales_Rep_ID"));
                 }
             }
+            Assertions.assertTrue(xlsxFile, "xlsx файл не найден");
         }
     }
     @Test
